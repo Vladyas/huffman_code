@@ -1,4 +1,4 @@
-from HuffmanAlgorithm import HuffmanAlgorithm
+from huffman_algorithm import HuffmanAlgorithm
 
 
 class HuffmanCodec:

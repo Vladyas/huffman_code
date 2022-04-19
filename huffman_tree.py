@@ -18,7 +18,8 @@ class HuffmanTree:
 
     def build_tree(self, freq_list):
         self.freq_list = freq_list
-        for i in range(0, 256):
+        for i in range(256):
+        # for i in range(0, 256):
             if self.freq_list[i] != 0:
                 n = self.Node()
                 n.freq = self.freq_list[i]
@@ -28,16 +29,14 @@ class HuffmanTree:
         while len(self.node_list) > 1:
             tmp_heap = []
             while len(self.node_list) > 1:
-                right_node = heapq.heappop(self.node_list)
-                left_node = heapq.heappop(self.node_list)
                 parent_node = self.Node()
-                parent_node.freq = left_node.freq + right_node.freq
-                parent_node.left = left_node
-                parent_node.right = right_node
+                parent_node.right = heapq.heappop(self.node_list)
+                parent_node.left = heapq.heappop(self.node_list)
+                parent_node.freq = parent_node.left.freq + parent_node.right.freq
                 tmp_heap.append(parent_node)
 
-            for i in range(0, len(tmp_heap)):
-                heapq.heappush(self.node_list, tmp_heap[i])
+            for i in tmp_heap:
+                heapq.heappush(self.node_list, i)
 
 
 if __name__ == '__main__':
@@ -58,4 +57,3 @@ if __name__ == '__main__':
     print('Check frequency in the tree...')
     test_tree(t.node_list[0])
     print("Check frequency in the tree is finished. It is OKAY if you haven't see '<wrong list orders>' message")
-    pass
