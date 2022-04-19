@@ -1,7 +1,8 @@
 from huffman_algorithm import HuffmanAlgorithm
-
+import pickle
 
 class HuffmanCodec:
+    ''' Encode or decode buffer and write to destination file'''
 
     def __init__(self):
         self.ha = HuffmanAlgorithm()
@@ -18,6 +19,10 @@ class HuffmanCodec:
 
         f_input.seek(0, 0)
 
+        with open('treedump', 'wb') as f:
+            self.ha.prepare_alg()
+            pickle.dump(self.ha.huffman_tree, f)
+
         while True:
             buff = f_input.read(self.buf_size)
             if buff == b'':
@@ -28,6 +33,10 @@ class HuffmanCodec:
         f_encoded.flush()
 
     def decode(self, f_encoded, f_decoded):
+
+        with open('treedump', 'rb') as f:
+            self.ha.huffman_tree = pickle.load(f)
+
         while True:
             buff = f_encoded.read(self.buf_size)
             if buff == b'':

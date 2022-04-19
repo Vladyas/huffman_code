@@ -19,25 +19,31 @@ def check_res(name_in_file, name_decoded_file):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) > 1:
-        name_in_file = sys.argv[1]
+    if len(sys.argv) == 3:
+        if sys.argv[1] not in ('-e', '-d'):
+            print("wrong mode value(-e or -d are allowed)")
+            sys.exit()
+
+        name_in_file = sys.argv[2]
         name_start = name_in_file.partition('.')[0]
         name_extension = name_in_file.partition('.')[2]
-        name_encoded_file = name_start + '_encoded' + '.' + name_extension
-        name_decoded_file = name_start + '_decoded' + '.' + name_extension
+        name_encoded_file = name_start + '_e' + '.' + name_extension
+        name_decoded_file = name_start + '_d' + '.' + name_extension
         name_deb_file = name_start + '_debug' + '.' + name_extension
     else:
-        print("No input file name passed in parameters")
+        print("It must be 2 parameters passed: mode value(-e or -d) and file name")
         sys.exit()
 
     hc = HuffmanCodec()
 
-    with open(name_in_file, 'rb') as f_input:
-        with open(name_encoded_file, 'w') as f_encoded:
-            hc.encode(f_input, f_encoded)
+    if sys.argv[1] == '-e':
+        with open(name_in_file, 'rb') as f_input:
+            with open(name_encoded_file, 'w') as f_encoded:
+                hc.encode(f_input, f_encoded)
 
-    with open(name_encoded_file, 'rb') as f_encoded:
-        with open(name_decoded_file, 'wb') as f_decoded:
-            hc.decode(f_encoded, f_decoded)
+    elif sys.argv[1] == '-d':
+        with open(name_in_file, 'rb') as f_encoded:
+            with open(name_decoded_file, 'wb') as f_decoded:
+                hc.decode(f_encoded, f_decoded)
 
-    check_res(name_in_file, name_decoded_file)
+    # check_res(name_in_file, name_decoded_file)

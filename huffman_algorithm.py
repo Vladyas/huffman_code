@@ -26,11 +26,15 @@ class HuffmanAlgorithm:
 
         create_encode_list(self.huffman_tree.node_list[0])
 
-    def encode_buff(self, buff_in):
+    def prepare_alg(self):
         if not self.ready:
             self.huffman_tree.build_tree(self.freq)
             self.build_encode_list()
             self.ready = True
+
+
+    def encode_buff(self, buff_in):
+        self.prepare_alg()
         encoded_buff = ''
         for i in buff_in:
             encoded_buff += self.encode[i]
