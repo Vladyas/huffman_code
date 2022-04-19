@@ -2,7 +2,13 @@ from huffman_algorithm import HuffmanAlgorithm
 import pickle
 
 class HuffmanCodec:
-    ''' Encode or decode buffer and write to destination file'''
+    ''' 1 Encode() :
+            - add huffman_tree at the beginning of output file
+            - write encoded buffer to output file
+        2 Decode() :
+            -  read huffmun tree from the beginning of encoded input file and init algorithm
+            -  decode the rest of input file and write to out file
+        '''
 
     def __init__(self):
         self.ha = HuffmanAlgorithm()

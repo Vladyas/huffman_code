@@ -19,7 +19,7 @@ class HuffmanTree:
     def build_tree(self, freq_list):
         self.freq_list = freq_list
         for i in range(256):
-        # for i in range(0, 256):
+
             if self.freq_list[i] != 0:
                 n = self.Node()
                 n.freq = self.freq_list[i]
