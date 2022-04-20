@@ -2,19 +2,6 @@ import sys
 from huffman_codec import HuffmanCodec
 
 
-def check_res(name_in_file, name_decoded_file):
-    with open(name_in_file, 'rb') as f_input:
-        with open(name_decoded_file, 'rb') as f_decoded:
-            while True:
-                c1 = f_input.read(1)
-                c2 = f_decoded.read(1)
-                if c1 != c2:
-                    print('ERROR:Input and decoded files are not identical!')
-                    sys.exit()
-                if c1 == b'':
-                    print(f'{f_input.name} and {f_decoded.name} are identical!')
-                    break
-
 def main():
     BUFFER_SIZE = 1024
 
@@ -45,7 +32,6 @@ def main():
             with open(name_decoded_file, 'w', encoding='utf-8') as f_decoded:
                 hc.decode(f_encoded, f_decoded)
 
-    # check_res(name_in_file, name_decoded_file)
 
 if __name__ == '__main__':
     main()
