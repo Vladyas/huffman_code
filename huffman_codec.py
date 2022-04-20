@@ -1,5 +1,5 @@
-from huffman_algorithm import HuffmanAlgorithm
 import pickle
+from huffman_algorithm import HuffmanAlgorithm
 
 class HuffmanCodec:
     ''' 1 Encode() :
@@ -10,9 +10,9 @@ class HuffmanCodec:
             -  decode the rest of input file and write to out file
         '''
 
-    def __init__(self):
+    def __init__(self, buffer_size=1024):
         self.ha = HuffmanAlgorithm()
-        self.buf_size = 1024
+        self.buf_size = buffer_size
 
     def encode(self, f_input, f_encoded):
         f_input.seek(0, 0)

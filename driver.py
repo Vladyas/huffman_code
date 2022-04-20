@@ -15,8 +15,8 @@ def check_res(name_in_file, name_decoded_file):
                     print(f'{f_input.name} and {f_decoded.name} are identical!')
                     break
 
-
-if __name__ == '__main__':
+def main():
+    BUFFER_SIZE = 1024
 
     if len(sys.argv) == 3:
         if sys.argv[1] not in ('-e', '-d'):
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         print("It must be 2 parameters passed: mode value(-e or -d) and file name")
         sys.exit()
 
-    hc = HuffmanCodec()
+    hc = HuffmanCodec(BUFFER_SIZE)
 
     if sys.argv[1] == '-e':
         with open(name_in_file, 'rb') as f_input:
@@ -46,3 +46,6 @@ if __name__ == '__main__':
                 hc.decode(f_encoded, f_decoded)
 
     # check_res(name_in_file, name_decoded_file)
+
+if __name__ == '__main__':
+    main()
