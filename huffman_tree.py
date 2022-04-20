@@ -4,27 +4,23 @@ import heapq
 class HuffmanTree:
 
     def __init__(self):
-        self.freq_list = []
         self.node_list = []
 
     class Node:
         freq = 0
-        code = 256
+        symbol = None
         left = None
         right = None
 
         def __lt__(self, other):
             return self.freq < other.freq
 
-    def build_tree(self, freq_list):
-        self.freq_list = freq_list
-        for i in range(256):
-
-            if self.freq_list[i] != 0:
-                n = self.Node()
-                n.freq = self.freq_list[i]
-                n.code = i
-                heapq.heappush(self.node_list, n)
+    def build_tree(self, freqs):
+        for i in freqs:
+            n = self.Node()
+            n.freq = freqs[i]
+            n.symbol = i
+            heapq.heappush(self.node_list, n)
 
         while len(self.node_list) > 1:
             parent_node = self.Node()
@@ -32,23 +28,3 @@ class HuffmanTree:
             parent_node.left = heapq.heappop(self.node_list)
             parent_node.freq = parent_node.left.freq + parent_node.right.freq
             heapq.heappush(self.node_list, parent_node)
-
-
-if __name__ == '__main__':
-    t = HuffmanTree()
-    t_freq = [3, 3, 2, 2, 1]
-    t_freq += [0]*(256-len(t_freq))
-    t.build_tree(t_freq)
-
-    def test_tree(root):
-        if root.left is not None:
-            if root.left.freq < root.right.freq:
-                print('wrong list orders')
-            else:
-                test_tree(root.left)
-                test_tree(root.right)
-        else:
-            return
-    print('Check frequency in the tree...')
-    test_tree(t.node_list[0])
-    print("Check frequency in the tree is finished. It is OKAY if you haven't see '<wrong list orders>' message")

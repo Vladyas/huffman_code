@@ -4,21 +4,23 @@ from huffman_tree import HuffmanTree
 class HuffmanAlgorithm:
 
     def __init__(self):
-        self.freq = [0] * 256
-        self.encode = [''] * 256
+        self.freq = {}
+        self.encode = {}
         self.huffman_tree = HuffmanTree()
         self.ready = False
         self.temp_node = None
 
     def update_freq(self, buff_in):
         for i in buff_in:
-            self.freq[i] += 1
+            if i in self.freq.keys():
+                self.freq[i] += 1
+            else: self.freq[i] = 1
 
     def build_encode_list(self):
 
         def create_encode_list(node=None, char_code=''):
             if node.left is None:
-                self.encode[node.code] = char_code
+                self.encode[node.symbol] = char_code
                 return True
             else:
                 create_encode_list(node.left, char_code + '0')
@@ -47,24 +49,16 @@ class HuffmanAlgorithm:
             self.temp_node = self.huffman_tree.node_list[0]
         for i in buff_in:
             if self.temp_node.left is None:
-                buff_decoded += self.temp_node.code.to_bytes(1, byteorder='big')
+                buff_decoded += self.temp_node.symbol.to_bytes(1, byteorder='big')
                 self.temp_node = self.huffman_tree.node_list[0]
             if i == ord(b'0'):
                 self.temp_node = self.temp_node.left
             elif i == ord(b'1'):
                 self.temp_node = self.temp_node.right
         if self.temp_node.left is None:
-            buff_decoded += self.temp_node.code.to_bytes(1, byteorder='big')
+            buff_decoded += self.temp_node.symbol.to_bytes(1, byteorder='big')
             self.temp_node = self.huffman_tree.node_list[0]
         return buff_decoded
 
 
-if __name__ == "__main__":
-    buff = b'aaaabbcdefg'
-    ha = HuffmanAlgorithm()
-    ha.update_freq(buff)
-    buff_enc = ha.encode_buff(buff)
-    print('Encoded buff:', buff_enc)
-    buff_dec = ha.decode_buff(buff_enc.encode('utf-8'))
-    print('String to encode/decode:', buff)
-    print('Decoded buff:', buff_dec)
+

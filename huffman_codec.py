@@ -48,7 +48,3 @@ class HuffmanCodec:
             else:
                 f_decoded.write(self.ha.decode_buff(buff))
 
-
-if __name__ == '__main__':
-
-    hc = HuffmanCodec()
