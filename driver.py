@@ -36,13 +36,13 @@ def main():
     hc = HuffmanCodec(BUFFER_SIZE)
 
     if sys.argv[1] == '-e':
-        with open(name_in_file, 'rb') as f_input:
+        with open(name_in_file, 'r', encoding='utf-8') as f_input:
             with open(name_encoded_file, 'wb') as f_encoded:
                 hc.encode(f_input, f_encoded)
 
     elif sys.argv[1] == '-d':
         with open(name_in_file, 'rb') as f_encoded:
-            with open(name_decoded_file, 'wb') as f_decoded:
+            with open(name_decoded_file, 'w', encoding='utf-8') as f_decoded:
                 hc.decode(f_encoded, f_decoded)
 
     # check_res(name_in_file, name_decoded_file)

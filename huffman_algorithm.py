@@ -37,26 +37,31 @@ class HuffmanAlgorithm:
 
     def encode_buff(self, buff_in):
         self.prepare_alg()
-        encoded_buff = ''
+        encoded_buff, bytes_buff = '', b''
         for i in buff_in:
             encoded_buff += self.encode[i]
+        for i in range(0, len(encoded_buff), 8):
+            bytes_buff +=(int(encoded_buff[i:i+8], 2)).to_bytes(1, 'big')
 
-        return encoded_buff
+        return bytes_buff
 
-    def decode_buff(self, buff_in):
-        buff_decoded = b''
+    def decode_buff(self, buff_in_comp):
+        buff_decoded = ''
+        buff_in = ''
+        for i in buff_in_comp:
+            buff_in +=format(i, 'b')
         if self.temp_node is None:
             self.temp_node = self.huffman_tree.node_list[0]
         for i in buff_in:
             if self.temp_node.left is None:
-                buff_decoded += self.temp_node.symbol.to_bytes(1, byteorder='big')
+                buff_decoded += self.temp_node.symbol
                 self.temp_node = self.huffman_tree.node_list[0]
-            if i == ord(b'0'):
+            if i == '0':
                 self.temp_node = self.temp_node.left
-            elif i == ord(b'1'):
+            elif i == '1':
                 self.temp_node = self.temp_node.right
         if self.temp_node.left is None:
-            buff_decoded += self.temp_node.symbol.to_bytes(1, byteorder='big')
+            buff_decoded += self.temp_node.symbol
             self.temp_node = self.huffman_tree.node_list[0]
         return buff_decoded
 

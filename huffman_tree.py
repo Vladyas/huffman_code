@@ -28,3 +28,5 @@ class HuffmanTree:
             parent_node.left = heapq.heappop(self.node_list)
             parent_node.freq = parent_node.left.freq + parent_node.right.freq
             heapq.heappush(self.node_list, parent_node)
+
+
