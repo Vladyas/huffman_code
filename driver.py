@@ -1,8 +1,6 @@
-# extract input file name from received arguments
-# call HuffmanCodec to build encoded and decoded files
-# compare input and decoded files byte-to-byte and print final message are the files identical
 import sys
 from huffman_codec import HuffmanCodec
+
 
 def check_res(name_in_file, name_decoded_file):
     with open(name_in_file, 'rb') as f_input:
@@ -16,6 +14,7 @@ def check_res(name_in_file, name_decoded_file):
                 if c1 == b'':
                     print(f'{f_input.name} and {f_decoded.name} are identical!')
                     break
+
 
 if __name__ == '__main__':
 
@@ -38,7 +37,7 @@ if __name__ == '__main__':
 
     if sys.argv[1] == '-e':
         with open(name_in_file, 'rb') as f_input:
-            with open(name_encoded_file, 'w') as f_encoded:
+            with open(name_encoded_file, 'wb') as f_encoded:
                 hc.encode(f_input, f_encoded)
 
     elif sys.argv[1] == '-d':

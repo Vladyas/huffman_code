@@ -25,23 +25,21 @@ class HuffmanCodec:
 
         f_input.seek(0, 0)
 
-        with open('treedump', 'wb') as f:
-            self.ha.prepare_alg()
-            pickle.dump(self.ha.huffman_tree, f)
+        self.ha.prepare_alg()
+        pickle.dump(self.ha.huffman_tree, f_encoded)
 
         while True:
             buff = f_input.read(self.buf_size)
             if buff == b'':
                 break
             else:
-                f_encoded.write(self.ha.encode_buff(buff))
+                f_encoded.write(self.ha.encode_buff(buff).encode())
 
         f_encoded.flush()
 
     def decode(self, f_encoded, f_decoded):
 
-        with open('treedump', 'rb') as f:
-            self.ha.huffman_tree = pickle.load(f)
+        self.ha.huffman_tree = pickle.load(f_encoded)
 
         while True:
             buff = f_encoded.read(self.buf_size)

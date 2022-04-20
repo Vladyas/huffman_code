@@ -27,16 +27,11 @@ class HuffmanTree:
                 heapq.heappush(self.node_list, n)
 
         while len(self.node_list) > 1:
-            tmp_heap = []
-            while len(self.node_list) > 1:
-                parent_node = self.Node()
-                parent_node.right = heapq.heappop(self.node_list)
-                parent_node.left = heapq.heappop(self.node_list)
-                parent_node.freq = parent_node.left.freq + parent_node.right.freq
-                tmp_heap.append(parent_node)
-
-            for i in tmp_heap:
-                heapq.heappush(self.node_list, i)
+            parent_node = self.Node()
+            parent_node.right = heapq.heappop(self.node_list)
+            parent_node.left = heapq.heappop(self.node_list)
+            parent_node.freq = parent_node.left.freq + parent_node.right.freq
+            heapq.heappush(self.node_list, parent_node)
 
 
 if __name__ == '__main__':
