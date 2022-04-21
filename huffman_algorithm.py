@@ -40,8 +40,11 @@ class HuffmanAlgorithm:
         encoded_buff, bytes_buff = '', b''
         for i in buff_in:
             encoded_buff += self.encode[i]
+
+        self.huffman_tree.lengh = len(encoded_buff)
+
         for i in range(0, len(encoded_buff), 8):
-            bytes_buff +=(int(encoded_buff[i:i+8], 2)).to_bytes(1, 'big')
+            bytes_buff +=int((encoded_buff[i:i+8]+'0'*8)[:8], 2).to_bytes(1, 'big')
 
         return bytes_buff
 
@@ -49,7 +52,9 @@ class HuffmanAlgorithm:
         buff_decoded = ''
         buff_in = ''
         for i in buff_in_comp:
-            buff_in +=format(i, 'b')
+            buff_in +=format(i, '0>8b')
+        buff_in = buff_in[:self.huffman_tree.lengh]
+
         if self.temp_node is None:
             self.temp_node = self.huffman_tree.node_list[0]
         for i in buff_in:
@@ -60,9 +65,7 @@ class HuffmanAlgorithm:
                 self.temp_node = self.temp_node.left
             elif i == '1':
                 self.temp_node = self.temp_node.right
-        if self.temp_node.left is None:
-            buff_decoded += self.temp_node.symbol
-            self.temp_node = self.huffman_tree.node_list[0]
+        buff_decoded += self.temp_node.symbol
         return buff_decoded
 
 

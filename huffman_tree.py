@@ -3,14 +3,18 @@ import heapq
 
 class HuffmanTree:
 
+
+
     def __init__(self):
         self.node_list = []
+        self.lengh = 0
 
     class Node:
         freq = 0
         symbol = None
         left = None
         right = None
+
 
         def __lt__(self, other):
             return self.freq < other.freq
@@ -24,8 +28,8 @@ class HuffmanTree:
 
         while len(self.node_list) > 1:
             parent_node = self.Node()
-            parent_node.right = heapq.heappop(self.node_list)
             parent_node.left = heapq.heappop(self.node_list)
+            parent_node.right = heapq.heappop(self.node_list)
             parent_node.freq = parent_node.left.freq + parent_node.right.freq
             heapq.heappush(self.node_list, parent_node)
 
