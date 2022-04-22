@@ -26,10 +26,10 @@ class HuffmanCodec:
 
         self.ha.prepare_alg()
         buff = f_input.read()
-        tmp = self.ha.encode_buff(buff)
+        encoded_buff_and_lenght = self.ha.encode_buff(buff)
 
-        pickle.dump(self.ha.huffman_tree, f_encoded)
-        f_encoded.write(tmp)
+        pickle.dump((self.ha.huffman_tree, encoded_buff_and_lenght[1]), f_encoded)
+        f_encoded.write(encoded_buff_and_lenght[0])
         # while True:
         #     buff = f_input.read(self.buf_size)
         #     if buff == '':
@@ -41,11 +41,11 @@ class HuffmanCodec:
         f_encoded.flush()
 
     def decode(self, f_encoded, f_decoded):
-
-        self.ha.huffman_tree = pickle.load(f_encoded)
+        tree_and_lenght = pickle.load(f_encoded)
+        self.ha.huffman_tree = tree_and_lenght[0]
 
         buff = f_encoded.read()
-        decoded_buff = self.ha.decode_buff(buff)
+        decoded_buff = self.ha.decode_buff(buff, tree_and_lenght[1])
         f_decoded.write(decoded_buff)
         # while True:
         #     buff = f_encoded.read(self.buf_size)
