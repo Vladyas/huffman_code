@@ -15,8 +15,10 @@ class HuffmanCodec:
         self.buf_size = buffer_size
 
     def encode(self, f_input, f_encoded):
+        f_input_lenght = 0
         while True:
             buff = f_input.read(self.buf_size)
+            f_input_lenght +=len(buff)
             if buff == '':
                 break
             else:
@@ -25,18 +27,16 @@ class HuffmanCodec:
         f_input.seek(0, 0)
 
         self.ha.prepare_alg()
-        buff = f_input.read()
-        encoded_buff_and_lenght = self.ha.encode_buff(buff)
+        pickle.dump((self.ha.huffman_tree, f_input_lenght), f_encoded)
 
-        pickle.dump((self.ha.huffman_tree, encoded_buff_and_lenght[1]), f_encoded)
-        f_encoded.write(encoded_buff_and_lenght[0])
-        # while True:
-        #     buff = f_input.read(self.buf_size)
-        #     if buff == '':
-        #         break
-        #     else:
-        #         tmp = self.ha.encode_buff(buff)
-        #         f_encoded.write(tmp)
+        while True:
+            buff = f_input.read(self.buf_size)
+            if buff == '':
+                break
+            else:
+                f_encoded.write(self.ha.encode_buff(buff))
+        if self.ha.last_bits:
+            f_encoded.write(self.ha.last_byte())
 
         f_encoded.flush()
 
@@ -53,4 +53,5 @@ class HuffmanCodec:
         #         break
         #     else:
         #         f_decoded.write(self.ha.decode_buff(buff))
+        f_decoded.flush()
 
