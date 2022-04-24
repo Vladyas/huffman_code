@@ -17,7 +17,7 @@ def main():
         name_decoded_file = name_start + '_d' + '.' + name_extension
         name_deb_file = name_start + '_debug' + '.' + name_extension
     else:
-        print("It must be 2 parameters passed: mode value(-e or -d) and file name")
+        print("2 parameters should be passed: mode (-e or -d) and 'file name'")
         sys.exit()
 
     hc = HuffmanCodec(BUFFER_SIZE)

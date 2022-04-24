@@ -1,6 +1,7 @@
 import pickle
 from huffman_algorithm import HuffmanAlgorithm
 
+
 class HuffmanCodec:
     ''' 1 Encode() :
             - add huffman_tree at the beginning of output file
@@ -11,24 +12,23 @@ class HuffmanCodec:
         '''
 
     def __init__(self, buffer_size=1024):
-        self.ha = HuffmanAlgorithm()
         self.buf_size = buffer_size
 
     def encode(self, f_input, f_encoded):
+        self.ha = HuffmanAlgorithm()
+
         f_input_lenght = 0
         while True:
             buff = f_input.read(self.buf_size)
-            f_input_lenght +=len(buff)
+            f_input_lenght += len(buff)
             if buff == '':
                 break
             else:
                 self.ha.update_freq(buff)
-
-        f_input.seek(0, 0)
-
-        self.ha.prepare_alg()
+        self.ha.prepare_encoding_alg()
         pickle.dump((self.ha.huffman_tree, f_input_lenght), f_encoded)
 
+        f_input.seek(0, 0)
         while True:
             buff = f_input.read(self.buf_size)
             if buff == '':
@@ -41,12 +41,10 @@ class HuffmanCodec:
         f_encoded.flush()
 
     def decode(self, f_encoded, f_decoded):
+        self.ha = HuffmanAlgorithm()
+
         tree_and_lenght = pickle.load(f_encoded)
         self.ha.huffman_tree = tree_and_lenght[0]
-
-        # buff = f_encoded.read()
-        # decoded_buff = self.ha.decode_buff(buff, tree_and_lenght[1])
-        # f_decoded.write(decoded_buff)
 
         while True:
             buff = f_encoded.read(self.buf_size)
@@ -55,4 +53,3 @@ class HuffmanCodec:
             else:
                 f_decoded.write(self.ha.decode_buff(buff, tree_and_lenght[1]))
         f_decoded.flush()
-

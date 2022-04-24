@@ -2,16 +2,15 @@ from huffman_tree import HuffmanTree
 
 
 class HuffmanAlgorithm:
+    huffman_tree = HuffmanTree()
 
-    def __init__(self):
-        self.freq = {}
-        self.encode = {}
-        self.huffman_tree = HuffmanTree()
-        self.ready = False
-        self.last_bits = ''
+    ready = False
+    freq = {}
+    encode = {}
+    last_bits = ''
 
-        self.temp_node = None
-        self.decoded_lenght = 0
+    temp_node = None
+    decoded_lenght = 0
 
     def update_freq(self, buff_in):
         for i in buff_in:
@@ -32,10 +31,11 @@ class HuffmanAlgorithm:
 
         create_encode_list(self.huffman_tree.node_list[0])
 
-    def prepare_alg(self):
+    def prepare_encoding_alg(self):
         if not self.ready:
             self.huffman_tree.build_tree(self.freq)
             self.build_encode_list()
+            self.last_bits = ''
             self.ready = True
 
     def last_byte(self):
@@ -59,27 +59,31 @@ class HuffmanAlgorithm:
         return bytes_buff
 
     def decode_buff(self, buff_encoded, result_lenght):
-        buff_decoded = ''
-        buff_in = ''
+        def add_decoded_sym():
+            nonlocal buff_decoded
+            buff_decoded += self.temp_node.symbol
+            self.decoded_lenght += 1
+            self.temp_node = self.huffman_tree.node_list[0]
+
+        buff_decoded, buff_in = '', ''
+
         for i in buff_encoded:
             buff_in += format(i, '0>8b')
 
         if self.temp_node is None:
             self.temp_node = self.huffman_tree.node_list[0]
+
         for i in buff_in:
             if self.temp_node.left is None:
-                buff_decoded += self.temp_node.symbol
-                self.decoded_lenght += 1
+                add_decoded_sym()
                 if self.decoded_lenght == result_lenght:
                     return buff_decoded
-                self.temp_node = self.huffman_tree.node_list[0]
             if i == '0':
                 self.temp_node = self.temp_node.left
             elif i == '1':
                 self.temp_node = self.temp_node.right
-        if self.temp_node.left is None:
-            buff_decoded += self.temp_node.symbol
-            self.decoded_lenght += 1
-            self.temp_node = self.huffman_tree.node_list[0]
+        else:
+            if self.temp_node.left is None:
+                add_decoded_sym()
 
         return buff_decoded

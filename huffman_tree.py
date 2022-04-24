@@ -3,9 +3,6 @@ import heapq
 
 class HuffmanTree:
 
-    def __init__(self):
-        self.node_list = []
-
     class Node:
         freq = 0
         symbol = None
@@ -16,6 +13,7 @@ class HuffmanTree:
             return self.freq < other.freq
 
     def build_tree(self, freqs):
+        self.node_list = []
         for i in freqs:
             n = self.Node()
             n.freq = freqs[i]
