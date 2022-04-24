@@ -8,9 +8,10 @@ class HuffmanAlgorithm:
         self.encode = {}
         self.huffman_tree = HuffmanTree()
         self.ready = False
+        self.last_bits = ''
+
         self.temp_node = None
         self.decoded_lenght = 0
-        self.last_bits = ''
 
     def update_freq(self, buff_in):
         for i in buff_in:
@@ -40,7 +41,6 @@ class HuffmanAlgorithm:
     def last_byte(self):
         return int((self.last_bits + '0' * 8)[:8], 2).to_bytes(1, 'big')
 
-
     def encode_buff(self, buff_in):
         encoded_buff, bytes_buff = self.last_bits, b''
         for i in buff_in:
@@ -61,7 +61,6 @@ class HuffmanAlgorithm:
     def decode_buff(self, buff_encoded, result_lenght):
         buff_decoded = ''
         buff_in = ''
-        decoded_sym_num = 0
         for i in buff_encoded:
             buff_in += format(i, '0>8b')
 
@@ -70,13 +69,17 @@ class HuffmanAlgorithm:
         for i in buff_in:
             if self.temp_node.left is None:
                 buff_decoded += self.temp_node.symbol
-                decoded_sym_num += 1
-                if decoded_sym_num == result_lenght: return buff_decoded
+                self.decoded_lenght += 1
+                if self.decoded_lenght == result_lenght:
+                    return buff_decoded
                 self.temp_node = self.huffman_tree.node_list[0]
             if i == '0':
                 self.temp_node = self.temp_node.left
             elif i == '1':
                 self.temp_node = self.temp_node.right
-        buff_decoded += self.temp_node.symbol
+        if self.temp_node.left is None:
+            buff_decoded += self.temp_node.symbol
+            self.decoded_lenght += 1
+            self.temp_node = self.huffman_tree.node_list[0]
 
         return buff_decoded

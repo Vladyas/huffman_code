@@ -44,14 +44,15 @@ class HuffmanCodec:
         tree_and_lenght = pickle.load(f_encoded)
         self.ha.huffman_tree = tree_and_lenght[0]
 
-        buff = f_encoded.read()
-        decoded_buff = self.ha.decode_buff(buff, tree_and_lenght[1])
-        f_decoded.write(decoded_buff)
-        # while True:
-        #     buff = f_encoded.read(self.buf_size)
-        #     if buff == b'':
-        #         break
-        #     else:
-        #         f_decoded.write(self.ha.decode_buff(buff))
+        # buff = f_encoded.read()
+        # decoded_buff = self.ha.decode_buff(buff, tree_and_lenght[1])
+        # f_decoded.write(decoded_buff)
+
+        while True:
+            buff = f_encoded.read(self.buf_size)
+            if buff == b'':
+                break
+            else:
+                f_decoded.write(self.ha.decode_buff(buff, tree_and_lenght[1]))
         f_decoded.flush()
 
