@@ -2,6 +2,7 @@ from huffman_tree import HuffmanTree
 
 
 class HuffmanAlgorithm:
+
     huffman_tree = HuffmanTree()
 
     ready = False
@@ -19,7 +20,7 @@ class HuffmanAlgorithm:
             else:
                 self.freq[i] = 1
 
-    def build_encode_list(self):
+    def _build_encode_list(self):
 
         def create_encode_list(node=None, char_code=''):
             if node.left is None:
@@ -34,11 +35,12 @@ class HuffmanAlgorithm:
     def prepare_encoding_alg(self):
         if not self.ready:
             self.huffman_tree.build_tree(self.freq)
-            self.build_encode_list()
+            self._build_encode_list()
             self.last_bits = ''
             self.ready = True
 
     def last_byte(self):
+        # prepare the last byte of the encoded file
         return int((self.last_bits + '0' * 8)[:8], 2).to_bytes(1, 'big')
 
     def encode_buff(self, buff_in):

@@ -7,7 +7,7 @@ class HuffmanCodec:
             - add huffman_tree at the beginning of output file
             - write encoded buffer to output file
         2 Decode() :
-            -  read huffmun tree from the beginning of encoded input file and init algorithm
+            -  read huffman tree from the beginning of encoded input file and init algorithm
             -  decode the rest of input file and write to out file
         '''
 
@@ -15,9 +15,10 @@ class HuffmanCodec:
         self.buf_size = buffer_size
 
     def encode(self, f_input, f_encoded):
-        self.ha = HuffmanAlgorithm()
 
+        self.ha = HuffmanAlgorithm()
         f_input_lenght = 0
+        # build char frequencies list by update_freq()
         while True:
             buff = f_input.read(self.buf_size)
             f_input_lenght += len(buff)
@@ -25,9 +26,12 @@ class HuffmanCodec:
                 break
             else:
                 self.ha.update_freq(buff)
+        # make all neccessary preparations by prepare_encoding_alg() as soon as frequency list is build
         self.ha.prepare_encoding_alg()
+        # store encoding dictionary at the beginning of output file for future decoding
         pickle.dump((self.ha.huffman_tree, f_input_lenght), f_encoded)
 
+        # encode and store to output file the input file by BUF_SIZE lenght parts
         f_input.seek(0, 0)
         while True:
             buff = f_input.read(self.buf_size)
@@ -42,7 +46,6 @@ class HuffmanCodec:
 
     def decode(self, f_encoded, f_decoded):
         self.ha = HuffmanAlgorithm()
-
         tree_and_lenght = pickle.load(f_encoded)
         self.ha.huffman_tree = tree_and_lenght[0]
 

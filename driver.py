@@ -15,7 +15,7 @@ def main():
         name_extension = name_in_file.partition('.')[2]
         name_encoded_file = name_start + '_e' + '.' + name_extension
         name_decoded_file = name_start + '_d' + '.' + name_extension
-        name_deb_file = name_start + '_debug' + '.' + name_extension
+
     else:
         print("2 parameters should be passed: mode (-e or -d) and 'file name'")
         sys.exit()
