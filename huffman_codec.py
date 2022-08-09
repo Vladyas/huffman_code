@@ -22,10 +22,10 @@ class HuffmanCodec:
         while True:
             buff = f_input.read(self.buf_size)
             f_input_lenght += len(buff)
-            if buff == '':
-                break
-            else:
+            if buff:
                 self.ha.update_freq(buff)
+            else:
+                break
         # make all neccessary preparations by prepare_encoding_alg() as soon as frequency list is build
         self.ha.prepare_encoding_alg()
         # store encoding dictionary at the beginning of output file for future decoding
@@ -35,10 +35,10 @@ class HuffmanCodec:
         f_input.seek(0, 0)
         while True:
             buff = f_input.read(self.buf_size)
-            if buff == '':
-                break
-            else:
+            if buff:
                 f_encoded.write(self.ha.encode_buff(buff))
+            else:
+                break
         if self.ha.last_bits:
             f_encoded.write(self.ha.last_byte())
 
@@ -51,8 +51,9 @@ class HuffmanCodec:
 
         while True:
             buff = f_encoded.read(self.buf_size)
-            if buff == b'':
-                break
-            else:
+            if buff:
                 f_decoded.write(self.ha.decode_buff(buff, tree_and_lenght[1]))
+            else:
+                break
+
         f_decoded.flush()

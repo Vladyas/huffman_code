@@ -20,22 +20,20 @@ class HuffmanAlgorithm:
             else:
                 self.freq[i] = 1
 
-    def _build_encode_list(self):
+    def _build_encode_list(self, node=None, char_code=''):
 
-        def create_encode_list(node=None, char_code=''):
-            if node.left is None:
-                self.encode[node.symbol] = char_code
-                return True
-            else:
-                create_encode_list(node.left, char_code + '0')
-                create_encode_list(node.right, char_code + '1')
+        if node.left is None:
+            self.encode[node.symbol] = char_code
+            return
+        else:
+            self._build_encode_list(node.left, char_code + '0')
+            self._build_encode_list(node.right, char_code + '1')
 
-        create_encode_list(self.huffman_tree.node_list[0])
 
     def prepare_encoding_alg(self):
         if not self.ready:
             self.huffman_tree.build_tree(self.freq)
-            self._build_encode_list()
+            self._build_encode_list(self.huffman_tree.node_list[0])
             self.last_bits = ''
             self.ready = True
 
