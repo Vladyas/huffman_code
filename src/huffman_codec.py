@@ -15,7 +15,6 @@ class HuffmanCodec:
         self.buf_size = buffer_size
 
     def encode(self, f_input, f_encoded):
-
         self.ha = HuffmanAlgorithm()
         f_input_lenght = 0
         # build char frequencies list by update_freq()

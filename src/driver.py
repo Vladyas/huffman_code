@@ -1,34 +1,29 @@
-import sys
-from huffman_codec import HuffmanCodec
+import sys, argparse, os
+from codec import Codec
+
+
+def parse_args(PARAM_ENCODE, PARAM_DECODE):
+    parser = argparse.ArgumentParser(description='Encode and Decode files with Huffman codding.')
+    parser.add_argument('command', choices=[PARAM_ENCODE, PARAM_DECODE], help='e for encoding, d for decoding. ')
+    parser.add_argument('sourcefile', type=str, help='File for encoding or decoding.')
+
+    return parser.parse_args()
 
 
 def main():
-    BUFFER_SIZE = 1024
-    if len(sys.argv) == 3 and sys.argv[1] in ('-e', '-d'):
+    PARAM_ENCODE = 'e'
+    PARAM_DECODE = 'd'
 
-        name_in_file = sys.argv[2]
-        name_start = name_in_file.partition('.')[0]
-        name_extension = name_in_file.partition('.')[2]
-        name_encoded_file = name_start + '_e' + '.' + name_extension
-        name_decoded_file = name_start + '_d' + '.' + name_extension
+    args = parse_args(PARAM_ENCODE, PARAM_DECODE)
 
-    else:
-        print("2 parameters should be passed: mode (-e  or -d) and 'file name'")
-        sys.exit()
+    name_start, file_extension = os.path.splitext(args.sourcefile)
 
-    hc = HuffmanCodec(BUFFER_SIZE)
-
-    if sys.argv[1] == '-e':
-        with open(name_in_file, 'r', encoding='utf-8') as f_input:
-        # with open(name_in_file, 'r', encoding='iso-8859-1') as f_input:
-            with open(name_encoded_file, 'wb') as f_encoded:
-                hc.encode(f_input, f_encoded)
-
-    elif sys.argv[1] == '-d':
-        with open(name_in_file, 'rb') as f_encoded:
-            with open(name_decoded_file, 'w', encoding='utf-8') as f_decoded:
-            # with open(name_decoded_file, 'w', encoding='iso-8859-1') as f_decoded:
-                hc.decode(f_encoded, f_decoded)
+    if args.command == PARAM_ENCODE:
+        output_file = '{}_{}{}'.format(name_start, PARAM_ENCODE, file_extension)
+        Codec().encode(args.sourcefile, output_file)
+    elif args.command == PARAM_DECODE:
+        output_file = '{}_{}{}'.format(name_start, PARAM_DECODE, file_extension)
+        Codec().decode(args.sourcefile, output_file)
 
 
 if __name__ == '__main__':

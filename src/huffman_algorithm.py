@@ -4,7 +4,6 @@ from huffman_tree import HuffmanTree
 class HuffmanAlgorithm:
     huffman_tree = HuffmanTree()
 
-    # ready = False
     freq = {}
     encode = {}
     last_bits = ''
@@ -29,11 +28,9 @@ class HuffmanAlgorithm:
             self._build_encode_list(node.right, char_code + '1')
 
     def prepare_encoding_alg(self):
-        # if not self.ready:
         self.huffman_tree.build_tree(self.freq)
         self._build_encode_list(self.huffman_tree.node_list[0])
         self.last_bits = ''
-        # self.ready = True
 
     def last_byte(self):
         # prepare the last byte of the encoded file
