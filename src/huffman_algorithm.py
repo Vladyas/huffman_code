@@ -14,7 +14,7 @@ class Node:
 class HuffmanAlgorithm:
     def __init__(self):
 
-        self.node = Node()
+        self.node = None
         self.freq = {}
         self.encode = {}
         self.last_bits = ''
@@ -38,13 +38,6 @@ class HuffmanAlgorithm:
 
         self.node = node_list[0]
 
-    def update_freq(self, buff_in):
-        for i in buff_in:
-            if i in self.freq.keys():
-                self.freq[i] += 1
-            else:
-                self.freq[i] = 1
-
     def _build_encode_list(self, node=None, char_code=''):
 
         if node.left is None:
@@ -53,6 +46,13 @@ class HuffmanAlgorithm:
         else:
             self._build_encode_list(node.left, char_code + '0')
             self._build_encode_list(node.right, char_code + '1')
+
+    def update_freq(self, buff_in):
+        for i in buff_in:
+            if i in self.freq.keys():
+                self.freq[i] += 1
+            else:
+                self.freq[i] = 1
 
     def prepare_encoding_alg(self):
         self._build_tree(self.freq)
