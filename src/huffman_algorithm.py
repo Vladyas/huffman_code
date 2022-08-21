@@ -2,14 +2,14 @@ from huffman_tree import HuffmanTree
 
 
 class HuffmanAlgorithm:
-    huffman_tree = HuffmanTree()
+    def __init__(self):
 
-    freq = {}
-    encode = {}
-    last_bits = ''
-
-    temp_node = None
-    decoded_lenght = 0
+        self.huffman_tree = HuffmanTree()
+        self.freq = {}
+        self.encode = {}
+        self.last_bits = ''
+        self.temp_node = None
+        self.decoded_lenght = 0
 
     def update_freq(self, buff_in):
         for i in buff_in:
