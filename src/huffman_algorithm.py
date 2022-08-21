@@ -1,15 +1,42 @@
-from huffman_tree import HuffmanTree
+import heapq
+
+
+class Node:
+    freq = 0
+    symbol = None
+    left = None
+    right = None
+
+    def __lt__(self, other):
+        return self.freq < other.freq
 
 
 class HuffmanAlgorithm:
     def __init__(self):
 
-        self.huffman_tree = HuffmanTree()
+        self.node = Node()
         self.freq = {}
         self.encode = {}
         self.last_bits = ''
         self.temp_node = None
         self.decoded_lenght = 0
+
+    def _build_tree(self, freqs):
+        node_list = []
+        for i in freqs:
+            n = Node()
+            n.freq = freqs[i]
+            n.symbol = i
+            heapq.heappush(node_list, n)
+
+        while len(node_list) > 1:
+            parent_node = Node()
+            parent_node.left = heapq.heappop(node_list)
+            parent_node.right = heapq.heappop(node_list)
+            parent_node.freq = parent_node.left.freq + parent_node.right.freq
+            heapq.heappush(node_list, parent_node)
+
+        self.node = node_list[0]
 
     def update_freq(self, buff_in):
         for i in buff_in:
@@ -28,8 +55,8 @@ class HuffmanAlgorithm:
             self._build_encode_list(node.right, char_code + '1')
 
     def prepare_encoding_alg(self):
-        self.huffman_tree.build_tree(self.freq)
-        self._build_encode_list(self.huffman_tree.node_list[0])
+        self._build_tree(self.freq)
+        self._build_encode_list(self.node)
         self.last_bits = ''
 
     def last_byte(self):
@@ -58,7 +85,7 @@ class HuffmanAlgorithm:
             nonlocal buff_decoded
             buff_decoded += self.temp_node.symbol
             self.decoded_lenght += 1
-            self.temp_node = self.huffman_tree.node_list[0]
+            self.temp_node = self.node
 
         buff_decoded, buff_in = '', ''
 
@@ -66,7 +93,7 @@ class HuffmanAlgorithm:
             buff_in += format(i, '0>8b')
 
         if self.temp_node is None:
-            self.temp_node = self.huffman_tree.node_list[0]
+            self.temp_node = self.node
 
         for i in buff_in:
             if self.temp_node.left is None:

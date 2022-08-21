@@ -28,7 +28,7 @@ class HuffmanCodec:
         # make all neccessary preparations by prepare_encoding_alg() as soon as frequency list is build
         self.ha.prepare_encoding_alg()
         # store encoding dictionary at the beginning of output file for future decoding
-        f_encoded.write(pickle.dumps((self.ha.huffman_tree, f_input_lenght)))
+        f_encoded.write(pickle.dumps((self.ha.node, f_input_lenght)))
 
         # encode and store to output file the input file by BUF_SIZE lenght parts
         f_input.seek(0, 0)
@@ -46,7 +46,7 @@ class HuffmanCodec:
     def decode(self, f_encoded, f_decoded):
         self.ha = HuffmanAlgorithm()
         tree_and_lenght = pickle.load(f_encoded)
-        self.ha.huffman_tree = tree_and_lenght[0]
+        self.ha.node = tree_and_lenght[0]
 
         while True:
             buff = f_encoded.read(self.buf_size)
