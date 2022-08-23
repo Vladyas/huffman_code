@@ -7,7 +7,7 @@ Usage:
 To encode a source file run driver.py e source_file_name 
     source_file_name_e file will be generated in the same directory.
 To decode the encoded file run driver.py d encoded_file_name
-    encoded_file_name_d file will be generated in the same directory.
+    encoded_file_name_d file will be generated in the same directory.<br />
 The project directory contains War_and_Peace.txt (in Russian) and 
 chinese.txt (in Chinese with English prephase) files for testing purposes.
-<pre />
+</pre>
