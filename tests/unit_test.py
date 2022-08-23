@@ -6,6 +6,7 @@ def test_huffman_dict(get_encode_freqs_dicts):
     """
     Tests encoding dictionary.
     # correct dict is build basing on https://www.studytonight.com/data-structures/huffman-coding
+    # it seems incorrect dict is build basing on https://www.csfieldguide.org.nz/en/interactives/huffman-tree/
     """
     assert get_encode_freqs_dicts['test_encode'] == get_encode_freqs_dicts['correct_encode']
 
