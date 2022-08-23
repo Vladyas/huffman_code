@@ -5,7 +5,6 @@ from src import driver
 from src import huffman_codec
 from huffman_codec import HuffmanCodec, HuffmanAlgorithm
 
-
 # unnit_test  fixtures params
 # codding to test is got from https://www.csfieldguide.org.nz/en/interactives/huffman-tree/
 inputs_encodes_freqs = [
@@ -23,6 +22,11 @@ inputs_encodes_freqs = [
 
 @pytest.fixture(params=inputs_encodes_freqs)
 def get_encode_freqs_dicts(request):
+    """
+    Fixture for unit_test.py tests
+    :param request: tuple as (string to encode, correct encode dict, correct frequency dict)
+    :return: tuple as (calculated encode dict, calculated frequency dict, correct encode dict, correct frequency dict)
+    """
     TMP_FILE = 'tmp.txt'
     with open(TMP_FILE, 'w') as f:
         f.write(request.param[0])
@@ -46,19 +50,25 @@ def get_encode_freqs_dicts(request):
 
     os.remove(TMP_FILE)
 
+
 # driver_test  fixtures consts
 PARAM_ENCODE = 'e'
 PARAM_DECODE = 'd'
 
 books = [('War_and_Peace.txt', 'War_and_Peace_e.txt', 'War_and_Peace_e_d.txt'),
          ('chinese.txt', 'chinese_e.txt', 'chinese_e_d.txt')
-]
+         ]
 
 
 # ('empty.txt', 'empty_e.txt', 'empty_e_d.txt'),
 # ('notexists.txt', 'notexists_e.txt', 'notexists_e_d.txt')
 @pytest.fixture(params=books)
 def file_names(request):
+    """
+    The fixture for driver_test.py calls tested driver.py for encoding and decoding
+    :param request: tuple as (source file name, encoded file name, decoded file name)
+    :return: tuple as (source file name, decoded file name)
+    """
     file_source, file_encoded, file_decoded = request.param
     ### workaround to avoid argparse conflict when pytest is run with parameters
     test_path = sys.argv[0]
