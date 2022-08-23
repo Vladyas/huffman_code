@@ -5,31 +5,25 @@ from src import driver
 from src import huffman_codec
 from huffman_codec import HuffmanCodec, HuffmanAlgorithm
 
-# driver_test  fixtures consts
-PARAM_ENCODE = 'e'
-PARAM_DECODE = 'd'
-
-books = [('War_and_Peace.txt', 'War_and_Peace_e.txt', 'War_and_Peace_e_d.txt'),
-         ('chinese.txt', 'chinese_e.txt', 'chinese_e_d.txt')]
 
 # unnit_test  fixtures params
 # codding to test is got from https://www.csfieldguide.org.nz/en/interactives/huffman-tree/
-inputs_encodes_freqs=[
+inputs_encodes_freqs = [
     ('aaaaaaaaaaeeeeeeeeeeeeeeeiiiiiiiiiiiiooouuuussssssssssssst',
-     {'i': '00', 's': '01', 'e': '10', 'u': '1100', 't': '11010', 'o': '11011','a': '111'},
+     {'i': '00', 's': '01', 'e': '10', 'u': '1100', 't': '11010', 'o': '11011', 'a': '111'},
      {'a': 10, 'e': 15, 'i': 12, 'o': 3, 'u': 4, 's': 13, 't': 1}),
     ('Привет кодировщик Хаффмана!!',
-     {'и':'001', 'м':'0000', 'н':'0001', 'а':'010', 'р':'0110','в':'0111', ' ':'1000', 'к':'1001', 'о':'1010',
-      'ф':'1011', '!':'1100', 'П':'11010', 'е':'11011', 'т':'11100', 'д':'11101', 'щ':'11110','Х':'11111' },
-     {'и':3, 'м': 1, 'н':1, 'а':3, 'р':2, 'в': 2, ' ':2, 'к':2, 'о':2,
-      'ф':2, '!': 2, 'П': 1, 'е': 1, 'т': 1, 'д': 1, 'щ': 1, 'Х': 1}
+     {'и': '001', 'м': '0000', 'н': '0001', 'а': '010', 'р': '0110', 'в': '0111', ' ': '1000', 'к': '1001', 'о': '1010',
+      'ф': '1011', '!': '1100', 'П': '11010', 'е': '11011', 'т': '11100', 'д': '11101', 'щ': '11110', 'Х': '11111'},
+     {'и': 3, 'м': 1, 'н': 1, 'а': 3, 'р': 2, 'в': 2, ' ': 2, 'к': 2, 'о': 2,
+      'ф': 2, '!': 2, 'П': 1, 'е': 1, 'т': 1, 'д': 1, 'щ': 1, 'Х': 1}
      )
 ]
 
-ids = []
+
 @pytest.fixture(params=inputs_encodes_freqs)
 def get_encode_freqs_dicts(request):
-    TMP_FILE  = 'tmp.txt'
+    TMP_FILE = 'tmp.txt'
     with open(TMP_FILE, 'w') as f:
         f.write(request.param[0])
 
@@ -47,12 +41,22 @@ def get_encode_freqs_dicts(request):
                 break
 
     hc.ha.prepare_encoding_alg()
-    yield {'test_encode':hc.ha.encode, 'test_freq':hc.ha.freq,
-           'correct_encode':request.param[1], 'correct_freq':request.param[2]}
+    yield {'test_encode': hc.ha.encode, 'test_freq': hc.ha.freq,
+           'correct_encode': request.param[1], 'correct_freq': request.param[2]}
 
     os.remove(TMP_FILE)
 
+# driver_test  fixtures consts
+PARAM_ENCODE = 'e'
+PARAM_DECODE = 'd'
 
+books = [('War_and_Peace.txt', 'War_and_Peace_e.txt', 'War_and_Peace_e_d.txt'),
+         ('chinese.txt', 'chinese_e.txt', 'chinese_e_d.txt')
+]
+
+
+# ('empty.txt', 'empty_e.txt', 'empty_e_d.txt'),
+# ('notexists.txt', 'notexists_e.txt', 'notexists_e_d.txt')
 @pytest.fixture(params=books)
 def file_names(request):
     file_source, file_encoded, file_decoded = request.param
