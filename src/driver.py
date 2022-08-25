@@ -1,6 +1,7 @@
 import argparse
 import os
 from codec import Codec
+from hc_exceptions import HCEncodeTreeReadError
 
 
 def parse_args(PARAM_ENCODE, PARAM_DECODE):
@@ -29,7 +30,10 @@ def main():
     elif args.command == PARAM_DECODE:
         if os.path.isfile(args.sourcefile) and os.path.getsize(args.sourcefile) > 0:
             output_file = '{}_{}{}'.format(name_start, PARAM_DECODE, file_extension)
-            Codec().decode(args.sourcefile, output_file)
+            try:
+                Codec().decode(args.sourcefile, output_file)
+            except HCEncodeTreeReadError:
+                print('The source file {} could not be decoded as it was not encoded by this codec.'.format(args.sourcefile))
         else:
             print(MSG_FILEIOERROR)
 

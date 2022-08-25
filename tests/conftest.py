@@ -1,7 +1,7 @@
 import os
 import pytest, sys
 from src import driver
-from src import huffman_codec
+# from src import huffman_codec
 from huffman_codec import HuffmanCodec, HuffmanAlgorithm
 
 # unnit_test  fixtures params
@@ -58,13 +58,9 @@ books = [('War_and_Peace.txt', 'War_and_Peace_e.txt', 'War_and_Peace_e_d.txt'),
          ('chinese.txt', 'chinese_e.txt', 'chinese_e_d.txt')
          ]
 
-
-# ('empty.txt', 'empty_e.txt', 'empty_e_d.txt'),
-# ('notexists.txt', 'notexists_e.txt', 'notexists_e_d.txt')
-
 @pytest.fixture()
 def prepare_sys_argv():
-    ### workaround to avoid argparse conflict when pytest is run with parameters
+    """ workaround to avoid argparse conflict when pytest is run with parameters """
     test_path = sys.argv[0]
     sys.argv.clear()
     sys.argv.extend([test_path])
@@ -80,7 +76,6 @@ def file_names(request, prepare_sys_argv):
     """
     file_source, file_encoded, file_decoded = request.param
     sys.argv.extend([PARAM_ENCODE, file_source])
-    ###
     # encode test file
     driver.main()
     sys.argv[1] = PARAM_DECODE

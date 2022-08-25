@@ -1,15 +1,16 @@
 import pickle
+from hc_exceptions import HCEncodeTreeReadError
 from huffman_algorithm import HuffmanAlgorithm
 
 
 class HuffmanCodec:
-    ''' 1 Encode() :
+    """ 1 Encode() :
             - add huffman_tree at the beginning of output file
             - write encoded buffer to output file
         2 Decode() :
             -  read huffman tree from the beginning of encoded input file and init algorithm
             -  decode the rest of input file and write to out file
-        '''
+    """
 
     def __init__(self, buffer_size=1024):
         self.buf_size = buffer_size
@@ -45,7 +46,11 @@ class HuffmanCodec:
 
     def decode(self, f_encoded, f_decoded):
         self.ha = HuffmanAlgorithm()
-        tree_and_lenght = pickle.load(f_encoded)
+        try:
+            tree_and_lenght = pickle.load(f_encoded)
+        except Exception as e:
+            raise HCEncodeTreeReadError() from e
+
         self.ha.node = tree_and_lenght[0]
 
         while True:
