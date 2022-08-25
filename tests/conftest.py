@@ -1,5 +1,4 @@
 import os
-
 import pytest, sys
 from src import driver
 from src import huffman_codec
@@ -23,7 +22,7 @@ inputs_encodes_freqs = [
 @pytest.fixture(params=inputs_encodes_freqs)
 def get_encode_freqs_dicts(request):
     """
-    Fixture for unit_test.py tests
+    Fixture for test_unit_huffman_codec.py tests
     :param request: tuple as (string to encode, correct encode dict, correct frequency dict)
     :return: tuple as (calculated encode dict, calculated frequency dict, correct encode dict, correct frequency dict)
     """
@@ -62,18 +61,25 @@ books = [('War_and_Peace.txt', 'War_and_Peace_e.txt', 'War_and_Peace_e_d.txt'),
 
 # ('empty.txt', 'empty_e.txt', 'empty_e_d.txt'),
 # ('notexists.txt', 'notexists_e.txt', 'notexists_e_d.txt')
-@pytest.fixture(params=books)
-def file_names(request):
-    """
-    The fixture for driver_test.py calls tested driver.py for encoding and decoding
-    :param request: tuple as (source file name, encoded file name, decoded file name)
-    :return: tuple as (source file name, decoded file name)
-    """
-    file_source, file_encoded, file_decoded = request.param
+
+@pytest.fixture()
+def prepare_sys_argv():
     ### workaround to avoid argparse conflict when pytest is run with parameters
     test_path = sys.argv[0]
     sys.argv.clear()
-    sys.argv.extend([test_path, PARAM_ENCODE, file_source])
+    sys.argv.extend([test_path])
+
+
+@pytest.fixture(params=books)
+def file_names(request, prepare_sys_argv):
+    """
+    The fixture for test_driver.py calls tested driver.py for encoding and decoding
+    :param request: tuple as (source file name, encoded file name, decoded file name)
+    :param prepare_sys_argv is used for command line arguments processing
+    :return: tuple as (source file name, decoded file name)
+    """
+    file_source, file_encoded, file_decoded = request.param
+    sys.argv.extend([PARAM_ENCODE, file_source])
     ###
     # encode test file
     driver.main()

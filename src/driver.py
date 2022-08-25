@@ -1,4 +1,5 @@
-import sys, argparse, os
+import argparse
+import os
 from codec import Codec
 
 
@@ -13,17 +14,24 @@ def parse_args(PARAM_ENCODE, PARAM_DECODE):
 def main():
     PARAM_ENCODE = 'e'
     PARAM_DECODE = 'd'
+    MSG_FILEIOERROR = "The source file does not exist or empty."
 
     args = parse_args(PARAM_ENCODE, PARAM_DECODE)
 
     name_start, file_extension = os.path.splitext(args.sourcefile)
 
     if args.command == PARAM_ENCODE:
-        output_file = '{}_{}{}'.format(name_start, PARAM_ENCODE, file_extension)
-        Codec().encode(args.sourcefile, output_file)
+        if os.path.isfile(args.sourcefile) and os.path.getsize(args.sourcefile) > 0:
+            output_file = '{}_{}{}'.format(name_start, PARAM_ENCODE, file_extension)
+            Codec().encode(args.sourcefile, output_file)
+        else:
+            print(MSG_FILEIOERROR)
     elif args.command == PARAM_DECODE:
-        output_file = '{}_{}{}'.format(name_start, PARAM_DECODE, file_extension)
-        Codec().decode(args.sourcefile, output_file)
+        if os.path.isfile(args.sourcefile) and os.path.getsize(args.sourcefile) > 0:
+            output_file = '{}_{}{}'.format(name_start, PARAM_DECODE, file_extension)
+            Codec().decode(args.sourcefile, output_file)
+        else:
+            print(MSG_FILEIOERROR)
 
 
 if __name__ == '__main__':
